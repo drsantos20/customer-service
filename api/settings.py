@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'api.order',
 ]
 
 MIDDLEWARE = [
@@ -119,10 +120,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-CELERY = {
-    'CELERY_BROKER_URL': os.environ['CELERY_BROKER'],
-    'CELERY_IMPORTS': ('worker.tasks', ),
-    'CELERY_TASK_SERIALIZER': 'json',
-    'CELERY_RESULT_SERIALIZER': 'json',
-    'CELERY_ACCEPT_CONTENT': ['json'],
-}
+# CELERY = {
+#     'CELERY_BROKER_URL': 'http://localhost:15672',
+#     'CELERY_IMPORTS': ('worker.tasks', ),
+#     'CELERY_TASK_SERIALIZER': 'json',
+#     'CELERY_RESULT_SERIALIZER': 'json',
+#     'CELERY_ACCEPT_CONTENT': ['json'],
+# }
+
+CELERY_BROKER_URL = 'amqp://user:password@localhost:5672'
+
