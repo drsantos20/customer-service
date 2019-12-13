@@ -14,6 +14,7 @@ services:
       - ./api:/api
     depends_on:
       - broker
+      - redis
 
   worker:
     build: .
@@ -35,8 +36,15 @@ services:
     depends_on:
       - broker
 
+  redis:
+    image: redis:3.2-alpine
+    volumes:
+      - redis_data:/data
+
   broker:
     image: rabbitmq:3
     env_file: *envfile
     ports:
       - 5672:5672
+volumes:
+  redis_data:
