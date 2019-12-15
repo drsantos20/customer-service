@@ -120,13 +120,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# CELERY = {
-#     'CELERY_BROKER_URL': 'http://localhost:15672',
-#     'CELERY_IMPORTS': ('worker.tasks', ),
-#     'CELERY_TASK_SERIALIZER': 'json',
-#     'CELERY_RESULT_SERIALIZER': 'json',
-#     'CELERY_ACCEPT_CONTENT': ['json'],
-# }
-
-CELERY_BROKER_URL = 'amqp://user:password@localhost:5672'
-
+BROKER_URL = 'amqp://user:password@localhost:5672'
