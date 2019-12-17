@@ -17,6 +17,7 @@ def publish_metadata(message):
     queue = Queue(
         name='order-customer-queue',
         routing_key='address',
+        exchange=exchange,
     )
 
     queue.maybe_bind(connection)
