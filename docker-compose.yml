@@ -15,6 +15,7 @@ services:
     depends_on:
       - broker
       - redis
+      - postgres
 
   worker:
     build: .
@@ -36,6 +37,17 @@ services:
     depends_on:
       - broker
 
+  postgres:
+    image: postgres:10.1-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=dev
+      - POSTGRES_USER=dev
+      - POSTGRES_PASSWORD=dev123
+
   redis:
     image: redis:3.2-alpine
     volumes:
@@ -48,3 +60,4 @@ services:
       - 5672:5672
 volumes:
   redis_data:
+  postgres_data:
