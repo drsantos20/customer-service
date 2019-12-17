@@ -20,6 +20,7 @@ from api.order import viewsets
 
 router = routers.SimpleRouter()
 router.register(r'address', viewsets.UserOrderAddressViewSet, base_name='address')
+router.register(r'order', viewsets.UserOrderViewSet, base_name='order')
 
 urlpatterns = [
     path('', include(router.urls)),
