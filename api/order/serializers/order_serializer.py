@@ -36,5 +36,5 @@ class UserOrderSerializer(serializers.ModelSerializer):
             phone=validated_data['user']['phone'],
         )
         order = UserOrder.objects.create(address=address, user=user)
-        publish_metadata(message=order.id)
+        publish_metadata(message=order.address)
         return order

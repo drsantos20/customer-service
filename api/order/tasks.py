@@ -2,6 +2,7 @@ from django.conf import settings
 from kombu import Connection, Exchange, Producer, Queue
 
 
+
 def publish_metadata(message):
     connection = Connection(settings.BROKER_URL)
     connection.connect()
@@ -20,6 +21,9 @@ def publish_metadata(message):
         exchange=exchange,
     )
 
+    from api.order.serializers import UserOrderAddressSerializer
+    address_serializer = UserOrderAddressSerializer(message).data
+
     queue.maybe_bind(connection)
     queue.declare()
-    producer.publish(message)
+    producer.publish(address_serializer)
