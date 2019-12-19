@@ -2,7 +2,6 @@ from django.conf import settings
 from kombu import Connection, Exchange, Producer, Queue
 
 
-
 def publish_metadata(message):
     connection = Connection(settings.BROKER_URL)
     connection.connect()

@@ -15,6 +15,7 @@ class UserOrderAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserOrderAddress
         fields = (
+            'id',
             'street',
             'city',
             'neighborhood',
