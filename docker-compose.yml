@@ -16,6 +16,8 @@ services:
       - broker
       - redis
       - postgres
+    networks:
+      - proxynet
 
   worker:
     build: .
@@ -25,15 +27,6 @@ services:
     command: ["celery", "worker", "--app=worker.worker.app", "--concurrency=1", "--hostname=worker@%h", "--loglevel=INFO"]
     volumes:
       - ./api:/api
-    depends_on:
-      - broker
-
-  flower:
-    image: zoomeranalytics/flower:0.9.1-4.0.2
-    restart: "no"
-    env_file: *envfile
-    ports:
-      - "5555:5555"
     depends_on:
       - broker
 
@@ -52,6 +45,8 @@ services:
     image: redis:3.2-alpine
     volumes:
       - redis_data:/data
+    networks:
+      - proxynet
 
   broker:
     image: "rabbitmq:3-management"
@@ -59,6 +54,12 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    networks:
+      - proxynet
 volumes:
   redis_data:
   postgres_data:
+
+networks:
+  proxynet:
+    name: custom_network
