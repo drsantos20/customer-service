@@ -81,7 +81,7 @@ DATABASES = {
         'NAME': 'dev',
         'USER': 'dev',
         'PASSWORD': 'dev123',
-        'HOST': 'localhost',
+        'HOST': 'postgres',
         'PORT': 5432,
         'TEST': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -129,4 +129,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-BROKER_URL = 'amqp://user:password@localhost:5672'
+BROKER_URL = 'amqp://user:password@broker:5672'
+CELERY_BROKER_URL = 'amqp://user:password@broker:5672'
