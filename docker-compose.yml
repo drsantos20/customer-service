@@ -1,9 +1,9 @@
 version: '3.5'
 services:
 
-  app:
+  customer:
     build: .
-    image: &app api
+    image: &customer api
     restart: "no"
     command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
     env_file: &envfile
@@ -14,21 +14,25 @@ services:
       - ./api:/api
     depends_on:
       - broker
-      - redis
       - postgres
     networks:
       - proxynet
+    links:
+      - postgres
 
   worker:
     build: .
-    image: *app
     restart: "no"
-    env_file: *envfile
-    command: ["celery", "worker", "--app=worker.worker.app", "--concurrency=1", "--hostname=worker@%h", "--loglevel=INFO"]
+    env_file:
+      - environment.env
+    command: celery -A api worker -l info -n worker10.%h
     volumes:
       - ./api:/api
+    networks:
+      - proxynet
     depends_on:
       - broker
+      - postgres
 
   postgres:
     image: postgres:10.1-alpine
@@ -40,11 +44,6 @@ services:
       - POSTGRES_DB=dev
       - POSTGRES_USER=dev
       - POSTGRES_PASSWORD=dev123
-
-  redis:
-    image: redis:3.2-alpine
-    volumes:
-      - redis_data:/data
     networks:
       - proxynet
 
@@ -57,7 +56,6 @@ services:
     networks:
       - proxynet
 volumes:
-  redis_data:
   postgres_data:
 
 networks:
