@@ -1,10 +1,7 @@
 FROM python:3
-ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
-
-WORKDIR /
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
-RUN rm requirements.txt
-
-COPY . /
-WORKDIR /api
+ENV PYTHONUNBUFFERED 1
+RUN mkdir /customer-api
+WORKDIR /customer-api
+COPY requirements.txt /customer-api/
+RUN pip install -r requirements.txt
+COPY . /customer-api/
