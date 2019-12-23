@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import sys
+
+TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -75,13 +79,18 @@ WSGI_APPLICATION = 'api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+host = 'postgres'
+
+if TESTING:
+    host = 'localhost'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'dev',
         'USER': 'dev',
         'PASSWORD': 'dev123',
-        'HOST': 'postgres',
+        'HOST': host,
         'PORT': 5432,
         'TEST': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -131,3 +140,7 @@ STATIC_URL = '/static/'
 
 BROKER_URL = 'amqp://user:password@broker:5672'
 CELERY_BROKER_URL = 'amqp://user:password@broker:5672'
+
+if TESTING:
+    BROKER_URL = 'amqp://user:password@localhost:5672'
+    CELERY_BROKER_URL = 'amqp://user:password@localhost:5672'
