@@ -5,7 +5,7 @@ services:
     build: .
     image: &customer api
     restart: "no"
-    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     env_file: &envfile
       - environment.env
     ports:
