@@ -1,11 +1,10 @@
-from celery import shared_task
 from celery.utils.log import get_task_logger
 
 from django.conf import settings
 from kombu import Connection, Exchange, Queue, Consumer
 import socket
 from api.celery import app
-from api.order.tasks import process_address
+from api.order.utils import update_address
 
 logger = get_task_logger(__name__)
 
@@ -25,7 +24,7 @@ def consumer_from_queue():
 
     def process_message(body, message):
         logger.info('Message arrived with the following body {}'.format(body))
-        process_address(body)
+        update_address(body)
         message.ack()
 
     consumer = Consumer(connection, queues=queue, callbacks=[process_message], accept=['json', 'pickle', 'msgpack'])
