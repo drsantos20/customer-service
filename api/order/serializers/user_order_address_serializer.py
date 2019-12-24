@@ -2,7 +2,7 @@ from django.db import transaction
 from rest_framework import serializers
 
 from api.order.models.address import UserOrderAddress
-from api.order.tasks import publish_metadata
+from api.order.producer import send_address_to_queue
 
 
 class UserOrderAddressSerializer(serializers.ModelSerializer):
@@ -32,6 +32,6 @@ class UserOrderAddressSerializer(serializers.ModelSerializer):
             zip_code=validated_data['zip_code'],
             uf=validated_data['uf']
         )
-        publish_metadata(message=user_address.id)
+        send_address_to_queue(message=user_address.id)
 
         return user_address
