@@ -5,20 +5,25 @@ from kombu import Connection, Exchange, Queue, Consumer
 import socket
 from api.celery import app
 from api.order.utils import update_address
+from api.order.constants import (
+    ADDRESS_EXCHANGE,
+    ADDRESS_CONSUMER_ROUTING_KEY,
+    ADDRESS_CONSUMER_QUEUE
+)
 
 logger = get_task_logger(__name__)
 
 
-@app.task()
+@app.task
 def consumer_from_queue():
-    connection = Connection(settings.BROKER_URL, heartbeat=5)
+    connection = Connection(settings.BROKER_URL, heartbeat=10)
     connection.connect()
 
-    exchange = Exchange('example-exchange', type='direct')
+    exchange = Exchange(ADDRESS_EXCHANGE, type='direct')
 
     queue = Queue(
-        name='order-address-queue',
-        routing_key='geolocation',
+        name=ADDRESS_CONSUMER_QUEUE,
+        routing_key=ADDRESS_CONSUMER_ROUTING_KEY,
         exchange=exchange,
     )
 
