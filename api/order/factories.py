@@ -9,6 +9,8 @@ class UserOrderAddressFactory(factory.DjangoModelFactory):
     street = factory.Faker('pystr')
     city = factory.Faker('pystr')
     neighborhood = factory.Faker('pystr')
+    latitude = factory.Faker('pystr')
+    longitude = factory.Faker('pystr')
 
     class Meta:
         model = UserOrderAddress

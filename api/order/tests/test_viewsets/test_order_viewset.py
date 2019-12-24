@@ -6,7 +6,7 @@ from rest_framework.test import APITestCase, APIClient
 from django.urls import reverse
 
 from api.order.factories import UserOrderSerializerFactory
-from api.order.models import UserOrder
+from api.order.models import UserOrder, UserOrderAddress
 
 
 class TestUserOrderAddressViewSet(APITestCase):
@@ -60,3 +60,45 @@ class TestUserOrderAddressViewSet(APITestCase):
         self.assertEqual(order.address.zip_code, '04319-000')
         self.assertEqual(order.address.uf, 'SP')
 
+    def test_does_not_call_address_producer_when_geo_location_is_presented(self):
+        already_exist_address = UserOrderAddress.objects.create(
+            street='avenida paulista',
+            city='sao paulo',
+            uf='SP',
+            neighborhood='jardim paulistano',
+            zip_code='04319-000',
+            latitude='-23.6472437',
+            longitude='-46.6368677',
+        )
+
+        data = json.dumps({
+            'address': {
+                'street': 'avenida paulista',
+                'city': 'sao paulo',
+                'uf': 'SP',
+                'neighborhood': 'jardim paulistano',
+                'zip_code': '04319-000'
+            },
+            'user': {
+                'email': 'daniel_bone@gmail.com',
+                'name': 'Daniel Bone',
+                'phone': 999999999,
+            }
+        })
+
+        response = self.client.post(
+            reverse('order-list', kwargs={'version': 'v1'}),
+            data=data,
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        order = UserOrder.objects.get(user__email='daniel_bone@gmail.com')
+
+        self.assertEqual(order.address.street, already_exist_address.street)
+        self.assertEqual(order.address.city, already_exist_address.city)
+        self.assertEqual(order.address.neighborhood, already_exist_address.neighborhood)
+        self.assertEqual(order.address.zip_code, already_exist_address.zip_code)
+        self.assertEqual(order.address.uf, already_exist_address.uf)
+        self.assertEqual(order.address.latitude, already_exist_address.latitude)
+        self.assertEqual(order.address.longitude, already_exist_address.longitude)
