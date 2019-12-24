@@ -6,7 +6,7 @@ from api.order.models import UserOrderAddress, User
 from api.order.models.order import UserOrder
 from api.order.serializers.user_serializer import UserSerializer
 from api.order.serializers.user_order_address_serializer import UserOrderAddressSerializer
-from api.order.tasks import publish_metadata
+from api.order.producer import send_address_to_queue
 
 
 class UserOrderSerializer(serializers.ModelSerializer):
@@ -43,5 +43,5 @@ class UserOrderSerializer(serializers.ModelSerializer):
         order = UserOrder.objects.create(address=address_from_order, user=user)
 
         if not address_from_order.latitude and not address_from_order.longitude:
-            publish_metadata(message=order.address)
+            send_address_to_queue(message=order.address)
         return order
