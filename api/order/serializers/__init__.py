@@ -1,1 +1,1 @@
-from .user_order_address_serializer import UserOrderAddressSerializer
+from .address_serializer import AddressSerializer

@@ -1,3 +1,4 @@
+from celery.utils.log import get_task_logger
 from django.conf import settings
 from kombu import Connection, Exchange, Producer, Queue
 
@@ -8,8 +9,13 @@ from api.order.constants import (
 )
 
 
+logger = get_task_logger(__name__)
+
+
 def send_address_to_queue(message):
+    logger.info('Starting to send a message to {} queue'.format(ADDRESS_PRODUCER_QUEUE))
     with Connection(settings.BROKER_URL) as connection:
+        logger.info('Connected into the broker with success')
         connection.connect()
         channel = connection.channel()
 
@@ -26,8 +32,8 @@ def send_address_to_queue(message):
             exchange=exchange,
         )
 
-        from api.order.serializers import UserOrderAddressSerializer
-        address_serializer = UserOrderAddressSerializer(message).data
+        from api.order.serializers import AddressSerializer
+        address_serializer = AddressSerializer(message).data
 
         queue.maybe_bind(connection)
         queue.declare()

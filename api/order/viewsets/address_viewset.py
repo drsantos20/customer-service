@@ -2,8 +2,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework import mixins, status, viewsets
 from rest_framework.response import Response
 
-from api.order.models import UserOrderAddress
-from api.order.serializers.user_order_address_serializer import UserOrderAddressSerializer
+from api.order.models import Address
+from api.order.serializers.address_serializer import AddressSerializer
 
 
 class UserOrderAddressViewSet(
@@ -12,18 +12,18 @@ class UserOrderAddressViewSet(
     mixins.RetrieveModelMixin,
     viewsets.GenericViewSet,
 ):
-    serializer_class = UserOrderAddressSerializer
+    serializer_class = AddressSerializer
 
     def retrieve(self, request, *args, **kwargs):
-        address = get_object_or_404(UserOrderAddress, pk=self.kwargs.get('pk'))
-        serializer = UserOrderAddressSerializer(address)
+        address = get_object_or_404(Address, pk=self.kwargs.get('pk'))
+        serializer = AddressSerializer(address)
         return Response(serializer.data)
 
     def get_queryset(self):
-        return UserOrderAddress.objects.all().order_by('id')
+        return Address.objects.all().order_by('id')
 
     def create(self, request, *args, **kwargs):
-        serializer = UserOrderAddressSerializer(data=request.data)
+        serializer = AddressSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
