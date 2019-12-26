@@ -2,19 +2,19 @@ from django.db import transaction
 
 from rest_framework import serializers
 
-from api.order.models import UserOrderAddress, User
-from api.order.models.order import UserOrder
+from api.order.models import Address, User
+from api.order.models.order import Order
 from api.order.serializers.user_serializer import UserSerializer
-from api.order.serializers.user_order_address_serializer import UserOrderAddressSerializer
+from api.order.serializers.address_serializer import AddressSerializer
 from api.order.producer import send_address_to_queue
 
 
 class UserOrderSerializer(serializers.ModelSerializer):
-    address = UserOrderAddressSerializer(required=True)
+    address = AddressSerializer(required=True)
     user = UserSerializer(required=True)
 
     class Meta:
-        model = UserOrder
+        model = Order
         fields = (
             'address',
             'user',
@@ -22,12 +22,12 @@ class UserOrderSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        address = UserOrderAddress.objects.filter(street=validated_data['address']['street'])
+        address = Address.objects.filter(street=validated_data['address']['street'])
 
         if address.exists():
             address_from_order = address.first()
         else:
-            address_from_order = UserOrderAddress.objects.create(
+            address_from_order = Address.objects.create(
                 street=validated_data['address']['street'],
                 city=validated_data['address']['city'],
                 neighborhood=validated_data['address']['neighborhood'],
@@ -40,7 +40,7 @@ class UserOrderSerializer(serializers.ModelSerializer):
             name=validated_data['user']['name'],
             phone=validated_data['user']['phone'],
         )
-        order = UserOrder.objects.create(address=address_from_order, user=user)
+        order = Order.objects.create(address=address_from_order, user=user)
 
         if not address_from_order.latitude and not address_from_order.longitude:
             send_address_to_queue(message=order.address)
