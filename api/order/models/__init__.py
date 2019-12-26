@@ -1,3 +1,3 @@
-from .address import UserOrderAddress
-from .order import UserOrder
+from .address import Address
+from .order import Order
 from .user import User

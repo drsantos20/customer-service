@@ -6,7 +6,7 @@ from rest_framework.test import APITestCase, APIClient
 from django.urls import reverse
 
 from api.order.factories import UserOrderAddressFactory
-from api.order.models import UserOrderAddress
+from api.order.models import Address
 
 
 class TestUserOrderAddressViewSet(APITestCase):
@@ -52,7 +52,7 @@ class TestUserOrderAddressViewSet(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        address = UserOrderAddress.objects.get(street='avenida paulista')
+        address = Address.objects.get(street='avenida paulista')
 
         self.assertEqual(address.street, 'avenida paulista')
         self.assertEqual(address.city, 'sao paulo')

@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class UserOrderAddress(models.Model):
+class Address(models.Model):
     street = models.CharField(max_length=150, null=False, blank=False)
     city = models.CharField(max_length=150, null=False, blank=False)
     neighborhood = models.CharField(max_length=150, null=False, blank=False)

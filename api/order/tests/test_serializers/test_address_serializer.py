@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 from api.order.factories import UserOrderAddressFactory
-from api.order.serializers.user_order_address_serializer import UserOrderAddressSerializer
+from api.order.serializers.address_serializer import AddressSerializer
 
 
 class TestUserOrderAddressSerializer(TestCase):
@@ -14,7 +14,7 @@ class TestUserOrderAddressSerializer(TestCase):
             zip_code='01451-912',
         )
 
-        self.address_serializer = UserOrderAddressSerializer(instance=self.address)
+        self.address_serializer = AddressSerializer(instance=self.address)
 
     def test_get_address_serializer(self):
         serializer_data = self.address_serializer.data
