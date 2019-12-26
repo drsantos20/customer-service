@@ -9,9 +9,9 @@ Following the diagram below, celery keeps consumer up to listen if has a new mes
 
 For the producer part it also was used kombu to send a message to given queue.
 
-![oder-address-ms](/img/Address-Microservices.png)
+![oder-address-ms](/img/order-address-ms-design.png)
 
-![der](/img/oder-address-ms-er.png)
+![der](/img/order-address-ms-er.png)
 
 ### Getting Started
 Following these instructions will make this project running in your local machine development.
