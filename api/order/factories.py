@@ -1,8 +1,8 @@
 import factory
 
-from api.order.models import UserOrderAddress
+from api.order.models import Address
 from api.order.models.user import User
-from api.order.models.order import UserOrder
+from api.order.models.order import Order
 
 
 class UserOrderAddressFactory(factory.DjangoModelFactory):
@@ -13,7 +13,7 @@ class UserOrderAddressFactory(factory.DjangoModelFactory):
     longitude = factory.Faker('pystr')
 
     class Meta:
-        model = UserOrderAddress
+        model = Address
 
 
 class UserFactory(factory.DjangoModelFactory):
@@ -30,4 +30,4 @@ class UserOrderSerializerFactory(factory.DjangoModelFactory):
     address = factory.SubFactory(UserOrderAddressFactory)
 
     class Meta:
-        model = UserOrder
+        model = Order

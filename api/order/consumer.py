@@ -1,31 +1,35 @@
-from celery import shared_task
 from celery.utils.log import get_task_logger
 
 from django.conf import settings
 from kombu import Connection, Exchange, Queue, Consumer
 import socket
 from api.celery import app
-from api.order.tasks import process_address
+from api.order.utils import update_address
+from api.order.constants import (
+    ADDRESS_EXCHANGE,
+    ADDRESS_CONSUMER_ROUTING_KEY,
+    ADDRESS_CONSUMER_QUEUE
+)
 
 logger = get_task_logger(__name__)
 
 
-@app.task()
+@app.task
 def consumer_from_queue():
-    connection = Connection(settings.BROKER_URL, heartbeat=5)
+    connection = Connection(settings.BROKER_URL, heartbeat=10)
     connection.connect()
 
-    exchange = Exchange('example-exchange', type='direct')
+    exchange = Exchange(ADDRESS_EXCHANGE, type='direct')
 
     queue = Queue(
-        name='order-address-queue',
-        routing_key='geolocation',
+        name=ADDRESS_CONSUMER_QUEUE,
+        routing_key=ADDRESS_CONSUMER_ROUTING_KEY,
         exchange=exchange,
     )
 
     def process_message(body, message):
         logger.info('Message arrived with the following body {}'.format(body))
-        process_address(body)
+        update_address(body)
         message.ack()
 
     consumer = Consumer(connection, queues=queue, callbacks=[process_message], accept=['json', 'pickle', 'msgpack'])

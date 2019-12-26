@@ -6,7 +6,7 @@ from rest_framework.test import APITestCase, APIClient
 from django.urls import reverse
 
 from api.order.factories import UserOrderSerializerFactory
-from api.order.models import UserOrder, UserOrderAddress
+from api.order.models import Order, Address
 
 
 class TestUserOrderAddressViewSet(APITestCase):
@@ -53,7 +53,7 @@ class TestUserOrderAddressViewSet(APITestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        order = UserOrder.objects.get(user__email='john_due@gmail.com')
+        order = Order.objects.get(user__email='john_due@gmail.com')
         self.assertEqual(order.address.street, 'avenida paulista')
         self.assertEqual(order.address.city, 'sao paulo')
         self.assertEqual(order.address.neighborhood, 'jardim paulistano')
@@ -61,7 +61,7 @@ class TestUserOrderAddressViewSet(APITestCase):
         self.assertEqual(order.address.uf, 'SP')
 
     def test_does_not_call_address_producer_when_geo_location_is_presented(self):
-        already_exist_address = UserOrderAddress.objects.create(
+        already_exist_address = Address.objects.create(
             street='avenida paulista',
             city='sao paulo',
             uf='SP',
@@ -93,7 +93,7 @@ class TestUserOrderAddressViewSet(APITestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        order = UserOrder.objects.get(user__email='daniel_bone@gmail.com')
+        order = Order.objects.get(user__email='daniel_bone@gmail.com')
 
         self.assertEqual(order.address.street, already_exist_address.street)
         self.assertEqual(order.address.city, already_exist_address.city)
