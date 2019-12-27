@@ -22,10 +22,10 @@ Following these instructions will make this project running in your local machin
 ### Prerequisites
 
 ```buildoutcfg
-- Python
+- Python3
 - Docker
 - docker-compose
-- Postgres
+- Postgres  [psycopg](http://initd.org/psycopg/docs/install.html)
 ```
 
 ### Installing
@@ -64,5 +64,4 @@ POST http://127.0.0.1:8000/api/v1/order/
 ```
 
 ## Author
-
 * **Daniel Santos** - *Trying to keep simple and clean* - [drsantos20](https://github.com/drsantos20)
