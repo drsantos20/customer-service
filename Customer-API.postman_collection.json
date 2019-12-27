@@ -1,0 +1,51 @@
+{
+	"info": {
+		"_postman_id": "3dfd4476-8d75-4e80-8b35-adbec5e82bc7",
+		"name": "Customer-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create-order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"address\": {\n        \"street\": \"Praca da sé, 888\",\n        \"city\": \"Sao Paulo\",\n        \"uf\": \"SP\",\n        \"neighborhood\": \"Praça da sé\",\n        \"zip_code\": \"05424-000\"\n    },\n    \"user\": {\n        \"email\": \"john_due@gmail.com\",\n        \"name\": \"John\",\n        \"phone\": 999999999\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/order/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"order",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
