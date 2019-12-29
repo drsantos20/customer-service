@@ -9,7 +9,7 @@ Following the diagram below, celery keeps consumer up to listen if has a new mes
 
 For the producer part it also was used kombu to send a message to given a queue.
 
-![oder-address-ms](/img/order-address-ms-design.png)
+![order-address-ms](/img/order-address-ms-design.png)
 
 ![der](/img/order-address-ms-er.png)
 
@@ -63,5 +63,26 @@ python manage.py test
 POST http://127.0.0.1:8000/api/v1/order/
 ```
 
+### Create new Order
+```buildoutcfg
+POST http://127.0.0.1:8000/api/v1/order/
+
+{
+    "address": {
+        "street": "Praca da sé, 888",
+        "city": "Sao Paulo",
+        "uf": "SP",
+        "neighborhood": "Praça da sé",
+        "zip_code": "05424-000"
+    },
+    "user": {
+        "email": "john_due@gmail.com",
+        "name": "John",
+        "phone": 999999999
+    }
+}
+
+```
+
 ## Author
-* **Daniel Santos** - *Trying to keep simple and clean* - [drsantos20](https://github.com/drsantos20)
+* **Daniel Santos** - *Trying to keep simple and clean* - [drsantos20](https://www.linkedin.com/in/daniel-santos-879b1724/)
