@@ -28,6 +28,19 @@ Following these instructions will make this project running in your local machin
 - Postgres  [psycopg](http://initd.org/psycopg/docs/install.html)
 ```
 
+### To run
+
+```buildoutcfg
+1- git clone https://github.com/drsantos20/customer-service.git
+2- cd customer-service
+3- docker-compose up --build
+
+4- cd ..
+5- git clone https://github.com/drsantos20/address-service.git
+6- cd address-service
+7- docker-compose up --build
+```
+
 ### Installing
 
 1- `Customer`
