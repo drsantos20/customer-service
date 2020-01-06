@@ -37,6 +37,7 @@ Following these instructions will make this project running in your local machin
 
 4- cd ..
 5- git clone https://github.com/drsantos20/address-service.git
+5.1 Add your google maps API key into /address-service/api/settings.py -> `GOOGLE_API_KEY`
 6- cd address-service
 7- docker-compose up --build
 ```
